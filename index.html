@@ -1,0 +1,87 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Name | Portfolio</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>teflonjson</h1>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+                <!-- Inside <header> -->
+                <button id="theme-toggle">Toggle Theme</button>
+            </nav>
+        </header>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Short intro about you...</p>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="project-card">
+                <h3>Project Name</h3>
+                <p>Description of your project here.</p>
+            </div>
+        </section>
+
+        <section id="projects2">
+            <h2>More Projects</h2>
+            <div id="project-list"></div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Email: your@email.com</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Your Name</p>
+        </footer>
+    </body>
+    <script>
+        const toggleBtn = document.getElementById("theme-toggle");
+        const prefersDark = window.matchMedia(
+            "(prefers-color-scheme: dark)",
+        ).matches;
+
+        // Set initial theme based on system preference
+        if (prefersDark) {
+            document.body.classList.add("dark");
+        }
+
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+        });
+    </script>
+    <script>
+        async function loadProjects() {
+            const res = await fetch("projects.json");
+            const projects = await res.json();
+            const list = document.getElementById("project-list");
+
+            console.log("load projects");
+
+            projects.forEach((project) => {
+                const card = document.createElement("div");
+                console.log("load project:" + project.title);
+                card.className = "project-card";
+                card.innerHTML = `
+            <h3>${project.title}</h3>
+            <p>${project.description}</p>
+            <a href="${project.link}" target="_blank">View Project</a>
+          `;
+                list.appendChild(card);
+            });
+        }
+
+        loadProjects();
+    </script>
+</html>
